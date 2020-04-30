@@ -27,7 +27,7 @@ server.listen(5000,function() {
   
   const server = express()
   .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
-  .listen(PORT, () => console.log(`Listening on ${PORT}`));
+  .listen(port, () => console.log(`Listening on ${PORT}`));
   var io = socketIO(server); 
   
    app.set('port',port); //bub added 
