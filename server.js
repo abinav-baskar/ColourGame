@@ -4,13 +4,11 @@ var http = require('http');
 var path = require('path');
 var socketIO = require('socket.io');
 var app = express();
-//var server = http.Server(app); old v
-//var io = socketIO(server); old v
+var server = http.Server(app); 
+var io = socketIO(server); 
 
 //App Setup
-//app.set('port',5000); BUB COMMENTED
-
-
+app.set('port',5000); 
 app.use('/static',express.static(__dirname + '/static'));
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
@@ -26,15 +24,7 @@ server.listen(5000,function() {
   if (port == null || port == "") {
     port = 8082;
   }
-  
-  const server = express()
- // .use((req, res) => res.sendFile(index, { root: __dirname }))
- .use('/static',express.static(__dirname + '/static')); //new
 
-  .listen(port, () => console.log(`Listening on ${port}`));
-  var io = socketIO(server); 
-  
-   app.set('port',port); //bub added 
   server.listen(port, function () {
     console.log(`(1)Listening on ${server.address().port}`);
   });
