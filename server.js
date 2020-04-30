@@ -26,7 +26,7 @@ server.listen(5000,function() {
   }
   
   const server = express()
-  .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
+  .use((req, res) => res.sendFile(index, { root: __dirname }))
   .listen(port, () => console.log(`Listening on ${port}`));
   var io = socketIO(server); 
   
