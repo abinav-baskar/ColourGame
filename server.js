@@ -15,9 +15,18 @@ app.get('/', function(req, res) {
 });
 
 //Start the Server
+/*
 server.listen(5000,function() {
   console.log("Starting on localhost:50000");
 });
+*/
+ let port = process.env.PORT;
+  if (port == null || port == "") {
+    port = 8082;
+  }
+  server.listen(port, function () {
+    console.log(`Listening on ${server.address().port}`);
+  });
 
 const gameStages = {
 	newGame: 0,
