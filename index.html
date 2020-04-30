@@ -1,0 +1,705 @@
+<html>
+  <head>
+    <title>Server Testing</title>
+    <style>
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+      font-family: sans-serif;
+      font-weight: 100;
+}
+
+#btn {
+display: none;
+}
+
+body > .label {
+/*position: absolute;*/
+position: absolute;
+left: 37.5%;
+top: 50%;
+transform: translate(-50%,-50%);
+z-index: 1000;
+}
+.label {
+  display: flex;
+  display:none;
+/*  display: auto;*/
+/*display: auto;*/
+  justify-content: center;
+  align-items: center;
+
+background: RGBa(205,205,205,1);
+/*padding: 10px;*/
+width: 100px;
+height: 100px;
+transition: 0.25s ease;
+cursor: pointer;
+border: 5px solid transparent;
+border-radius: 50%; /*the one you edited*/
+}
+.label:hover {
+border-color: RGBa(0,0,0,0.1); /*this is the border on Log in*/
+}
+.label:active {
+background: RGBa(0,0,0,0.1);
+/*display: none;*/
+}
+.label:checked {/*bub did this*/
+  /*opacity: 0;*/
+
+}
+input:checked + .overlay{
+opacity: 1;
+z-index: 1000;
+}
+
+.overlay {
+position: fixed;
+height: 100%;
+width: 100%;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: RGBa(255,255,255,0.3);
+opacity: 0;
+z-index: 999;
+transition: 0.5s ease;
+}
+.popup {
+max-height: 90%;
+position: absolute;
+padding: 10px;
+left: 50%;
+top: 50%;
+width: 300px;
+overflow-y: auto;
+background: #fff;
+color: #999;
+transform: translate(-50%,-50%);
+border-radius: 20px;
+}
+
+.title {
+font-size: 25px;
+text-align: center;
+display: block;
+}
+.popup input {
+display: block;
+margin: 20px 0;
+width: 50%;
+padding: 5px 0;
+transition: 0.25s ease;
+color: #333;
+border: none;
+border-bottom: 1px solid transparent;
+font-size: 15px;
+outline: none;
+}
+.popup input:focus {
+width: 90%;
+border-bottom: 1px #aaa solid;
+}
+.login {
+margin: auto;
+display: block;
+width: 50px;
+background: #EEE;
+padding: 10px;
+cursor: pointer;
+transition: 0.25s ease;
+text-align: center;
+border-radius: 25px;
+}
+.login:hover {
+background: #e0e0e0;
+}
+.popup p {
+text-align: center;
+font-size: 20px;
+margin: 30px 0;
+}
+
+.username {
+color: #005DDD;
+text-decoration: none;
+}
+.username:hover {
+color: #00419A;
+text-decoration: underline;
+}
+
+
+
+@keyframes fadein {
+from {
+    opacity: 0;
+}
+to {
+    opacity: 1;
+}
+}
+
+#doubler {
+ /* width: 10%;
+  height: 10%;
+  background-color: #660000;
+  font-size: 20px;
+  justify-content: center;
+  align-items: center;
+  */
+  transform: translate(50%, 50%); 
+  visibility: hidden;
+}
+
+
+
+
+.blob {
+	background: black;
+	border-radius: 50%;
+/*	box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+	margin: 10px;*/
+	width: 10%;
+  height: 10%;
+  font-size:2vw; 
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  justify-content: center;
+  align-items: center;
+	/*transform: scale(1);*/
+	display:flex
+}
+
+
+.blob.blue {
+	background:rgba(52, 172, 224, 0.8);
+	box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.6);
+	animation: pulse-blue 2.5s infinite;
+  transform: translate(-50%, -50%); 
+}
+
+@keyframes pulse-blue {
+	0% {
+		transform: scale(0.95);
+		/*box-shadow: 0 0 0 0 rgba(52, 172, 224, 0.7);*/
+    transform: translate(-50%, -50%); 
+	}
+	
+	30% {
+		transform: scale(1);
+		box-shadow: 0 0 0 10px rgba(52, 172, 224, 0);
+    transform: translate(-50%, -50%); 
+	}
+	
+	100% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(52, 172, 224, 0);
+    transform: translate(-50%, -50%); 
+	}
+}
+
+
+#username {
+  position: absolute;
+  font-size:2.5em;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  top: 6%;
+  left: 78%;
+}
+
+h2 {
+color: pink;
+}
+
+    #loadCanvas {
+   margin: 0;
+   display: none; /*usually flex*/
+   position: absolute;
+   /*new stuff*/ 
+   top: 50%; 
+   left: 37.5%;
+   z-index: 20; 
+   justify-content: center;
+    align-items: center; /*these two don't seem to determine position*/ 
+    transition: background-color 2s ease-out;
+   transform: translate(-50%, -50%); }; 
+
+      #scoreCanvas {
+        margin: 0;
+        display: none;
+        position: absolute;
+        top: 0%; 
+   left: 37.5%;
+        z-index: 21;
+         justify-content: center;
+         align-items: center;
+
+   /*transform: translate(-50%, -50%); */
+
+  
+        };
+
+      #mainContainer {
+        /*padding: 10%;
+        width: 80%;
+        height: 80%;*/
+      }
+        #buttonContainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 100;
+    opacity: 0;
+    /*opacity: 0;*/
+  }
+
+  #buttonDisplay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -4;
+  }
+
+      button {
+        background-color: #4CAF50; /* Green */
+          border: none;
+          color: white;
+          padding: 15px 32px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          position: absolute;
+          /*opacity: 1;*/
+
+      }
+
+      .buttonCovers {
+        height: 50%; width:37.5%; /*width was 50%*/
+             border: none; cursor: pointer;
+             position: absolute;
+             z-index: 10;
+             transition: opacity 300ms;
+      }
+
+      .buttonDisplay hover .buttonCovers {
+        opacity: .7;
+           transition: opacity 300ms;
+      }
+
+      button:hover {
+
+        opacity: .7;
+        transition: opacity 300ms;}
+
+    button:focus {outline:none;}
+
+
+
+#but0 {
+  position: absolute;
+  top: 0%; /*was auto*/
+  left: 0;
+}
+#but1 {
+  position: absolute;
+  top: 0%; /*was auto*/
+  left: 37.5%; /*was 50*/
+}
+#but2 {
+  position: absolute;
+  top: 50%; 
+  left: auto;
+}
+#but3 {
+  position: absolute;
+top: 50%;
+  left: 37.5%; /*was 50*/ 
+}
+
+#vis0 {
+  position: absolute;
+  top: 0%; /*was auto*/
+  left: 0;
+}
+#vis1 {
+  position: absolute;
+  top: 0%; /*was auto*/
+  left: 37.5%; /*was 50%*/
+}
+#vis2 {
+  position: absolute;
+  top: 50%;
+  left: auto;
+}
+#vis3 {
+  position: absolute;
+top: 50%;
+  left: 37.5%; /*was 50%*/
+}
+
+.outerCircle {
+background-color: transparent;
+      /*background-image:
+      linear-gradient(red, yellow);*/
+
+/*border: 1vw solid rgba(97, 82, 72, 0.9);*/
+border: 10px solid rgba(97, 82, 72, 0.9);
+border-image-source: linear-gradient(lightgreen, darkgreen);
+border-image-slice: 20;
+/* make everything pixels again like srsly*/
+opacity: .9;
+/*border-right: 5% solid transparent;
+border-left: 5% solid transparent;*/
+border-radius: 50px;
+
+
+margin: 0 auto;
+position: absolute;
+top: 1%;
+left: 1%;
+/* the size of this must also go through game.js resize for it to be a percentage */
+
+}
+
+     .regButt {
+        height: 50%; width: 37.5%; /*width was 50%*/
+             border: none; cursor: pointer;
+             position: absolute;
+        /*     z-index: -100;
+            opacity: 0;*/
+               transition: opacity 300ms ;
+               /*display: none*/  animation: pulse 0.5s ease-in;
+      }
+
+      .semiCircularButt {
+        background: #9e978e;
+ display: inline-block;
+ margin: 0 1em 1em 0;
+ height: 100px;
+width: 100px;
+ border-radius: 90px 0 0 0;
+      }
+
+      @keyframes pulse{
+  25%  {transform: scale(0.9);}
+  75%  {transform: scale(1.1);}
+}
+
+      .regButt:hover {
+   opacity: .7; 
+      transition: opacity 300ms ;
+   }
+
+   .regButt.active {
+     opacity: .4;
+       transition: opacity 150ms
+    }
+#points {
+    position: absolute;
+  font-size:7em;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  top: 32.5%;
+  left: 87.5%;
+  transform:translate(-50%, -50%);
+}
+
+
+table, th, td {
+  border-collapse: collapse;
+  border-bottom: 1px solid #ddd;
+    padding: 4px; 
+  font-size: large;
+  border-radius: 10px; 
+  }
+
+table {
+    position: absolute;
+  top: 50%;
+  left:75%;
+  border-radius: 10px; /*not worrrrking well it is but*/ 
+  table-layout: fixed;
+  width:25%;
+  height: 50%;
+ 
+}
+table tr:nth-child(even) {
+  background-color: #d4d4d4
+}
+table tr:nth-child(odd) {
+  background-color: #b3b1b1
+}
+.centerAlignCell {
+    text-align: center;
+}
+
+#rightMarginInvisible {
+    position: absolute;
+    top: 0%;
+    left: 75%;
+    width: 25%;
+    height: 100%;
+    opacity: 0;
+    z-index: 100;
+}
+
+.showColour_Off {
+    background-color: #FF3300;
+    cursor:default;
+}
+    .showColour_Off:hover {
+        opacity: 1;
+    }
+.marginRect {
+    border-radius: 10% 10% 10% 10%;
+    background-color:#bfbfbf; 
+    width: 25%;
+  
+    z-index: -2;
+    text-align: left;
+    vertical-align: top;
+    font-style: italic;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: large;
+
+}
+#nameRect {
+    position: absolute;
+    top: 0%;
+    left: 75%;
+    height: 15%;
+}
+#pointsRect2 {
+    position: absolute;
+    top: 15%;
+    left: 75%;
+    height: 35%;
+  
+}
+#leaderboardRect {
+    position: absolute;
+    top: 50%;
+    left: 75%;
+    height: 50%;
+   
+}
+#image {
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    width: 10%;
+    height: 10%;
+    z-index: 10000;
+}
+#lockCitation {
+    position: absolute;
+    top: 0%;
+    left: 96%;
+    font-size: 0.05em;
+    color:rgba(97, 82, 72, 0.9);
+    text-align: right;
+    vertical-align: top;
+}
+#lockIcon {
+    position: absolute;
+    top: 82%;
+    left: 50%;
+    width: 22%;
+    opacity: 1; 
+    transform: translate(-62%, -50%);
+    visibility: hidden;
+}
+#colourShower {
+    position: absolute;
+   
+   top: 50%;
+   left: 37.5%;
+   transform: translate(-50%, -50%);
+  background-color: rgba(255,255,255,0);
+  border-radius: 50%;
+  z-index: 900;
+
+}
+#colourShower:hover > #eyeIcon {
+  top: 85%;
+    left: 50%;
+    width: 23%;
+    opacity: 1; 
+}
+#colourShower:hover > #revealDiv {
+  top: 72%;
+    left: 50%;    width: 50%;
+    opacity: 1; 
+}
+
+#eyeIcon {
+    position: absolute;
+    visibility: hidden;
+    transform: translate(-50%, -50%);
+    width: 0; 
+    opacity: 0; 
+    overflow: hidden;
+   
+    -webkit-transition: opacity .8s ;
+    -moz-transition: opacity .8s ease;
+    -ms-transition: opacity .8s ease;
+    -o-transition: opacity .8s ease;
+    transition: opacity .8s ease;
+}
+#revealDiv {
+    position: absolute;
+    visibility: hidden;
+    transform: translate(-50%, -50%);
+    width: 0; 
+    opacity: 0; 
+    overflow: hidden;
+    color: black; 
+   
+    -webkit-transition: opacity .8s ;
+    -moz-transition: opacity .8s ease;
+    -ms-transition: opacity .8s ease;
+    -o-transition: opacity .8s ease;
+    transition: opacity .8s ease;
+}
+
+
+
+    </style>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body onresize = "resizeFunction()">
+
+
+
+
+
+
+<div id = 'buttonDisplay', class ='buttonDisplay'>
+    <div id = 'vis0', class = "buttonCovers", style ="background-color: #FF3300;
+      border-radius: 10% 10% 0 10%;"> </div>
+
+    <div id = 'vis1', class = "buttonCovers", style ="background-color: #0099CC;
+      border-radius: 10% 10% 10% 0;"> </div>
+
+    <div id = 'vis2', class = "buttonCovers", style ="background-color: #00CC33;
+      border-radius: 10% 0 10% 10%;"> </div>
+
+    <div id = 'vis3', class = "buttonCovers", style ="background-color: #FFFF66;
+      border-radius: 0 10% 10% 10%;"> </div>
+</div>
+
+<div id = 'buttonContainer'>
+  	<button id = "but0", class= "regButt"> </button>
+  	<button id = "but1", class= "regButt"> </button>
+  	<button id = "but2", class= "regButt"> </button>
+  	<button id = "but3", class= "regButt"> </button>
+</div>
+
+
+
+  <table id='actualTable'>
+    <!--<tr>
+      <th colspan="2">Leaderboard</th>
+    </tr>-->
+    <tr id="row0">
+            <td id="place0", style="width:80%"></td>
+            <td id="points0", style="width:20%" ,class="centerAlignCell"></td>
+    </tr>
+    <tr id="row1">
+         
+            <td id="place1"></td>
+            <td id="points1",class="centerAlignCell"></td>
+    </tr>
+    <tr id="row2">
+           
+            <td id="place2"> </td>
+            <td id="points2",class="centerAlignCell"></td>
+    </tr>
+    <tr id="row3">
+           
+            <td id="place3"></td>
+            <td id="points3",class="centerAlignCell"></td>
+    </tr>
+
+<tr id="row4">
+           
+    <td id="place4"></td>
+    <td id="points4",class="centerAlignCell"></td>
+</tr>
+<tr id="row5">
+           
+    <td id="place5"></td>
+    <td id="points5",class="centerAlignCell"></td>
+</tr>
+<tr id="row6">
+           
+    <td id="place6"></td>
+    <td id="points6",class="centerAlignCell"></td>
+</tr>
+<tr id="row7">
+           
+    <td id="place7"></td>
+    <td id="points7",class="centerAlignCell"></td>
+</tr>
+<tr id="row8">
+           
+    <td id="place8"></td>
+    <td id="points8",class="centerAlignCell"></td>
+</tr>
+
+  </table>
+
+<div id="rightMarginInvisible", onmouseover="onMarginMouseover();"> hihih</div>
+
+<div id="nameRect", class="marginRect"><br>&nbsp &nbsp &nbsp Username</div>
+<div id="pointsRect2", class="marginRect"><br>&nbsp &nbsp &nbsp Points</div>
+<!--<div id="leaderboardRect", class="marginRect"></div>-->
+<div id="username"></div>
+<div id="points"></div>
+<!-- 
+  <td width="70%">January</td>
+    <td width="30%">$100</td> EXAMPLE
+-->
+
+ <!-- <div id = "lCanv"> -->
+  <canvas id="loadCanvas"></canvas>
+ <!-- </div> -->
+
+  <div id ="doubler", class = "blob blue", style = "z-index: 50;">
+    <text>x2</text>
+  </div>
+
+<button id="colourShower">
+    <img id="eyeIcon", src="https://img.icons8.com/material-outlined/96/000000/visible.png"/>
+    <div id="revealDiv">Reveal Colour</div>
+    <img id="lockIcon", src="https://img.icons8.com/metro/208/000000/lock.png"/>
+</button>
+
+  <label for="btn" class="label" id ="labele" style = "display:flex">Log in</label>
+  <input type="checkbox" id="btn"/>
+
+  <div class="overlay" id="nameAsker" style="display:flex">
+      <div class="popup">
+          <span class="title"></span>
+          <input  placeholder="What is your name?" id = "ph" />
+
+          <label id = "goBack" for="btn" class="login">Go back</label>
+
+      </div>
+  </div>
+
+<!--  <div id = "sCanv" style = "display:none"> -->
+    
+<!-- </div> -->
+
+
+<a href="https://icons8.com/icon/93/lock", id="lockCitation">Lock icon by Icons8</a>
+  </body>
+
+  <script src="/static/game.js"></script>
+</html>
