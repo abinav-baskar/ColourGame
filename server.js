@@ -24,10 +24,11 @@ server.listen(5000,function() {
   if (port == null || port == "") {
     port = 8082;
   }
+   app.set('port',port); //bub added 
   server.listen(port, function () {
     console.log(`(1)Listening on ${server.address().port}`);
   });
-  app.set('port',port); //bub added 
+ 
 
 const gameStages = {
 	newGame: 0,
