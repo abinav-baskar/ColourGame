@@ -9,10 +9,11 @@ var app = express();
 
 //App Setup
 //app.set('port',5000); BUB COMMENTED
+/*
 app.use('/static',express.static(__dirname + '/static'));
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
-});
+});*/ //USED TO BE THERE
 
 //Start the Server
 /*
@@ -26,7 +27,11 @@ server.listen(5000,function() {
   }
   
   const server = express()
-  .use((req, res) => res.sendFile(index, { root: __dirname }))
+ // .use((req, res) => res.sendFile(index, { root: __dirname }))
+ .use('/static',express.static(__dirname + '/static')); //new
+ .get('/', function(req, res) {
+  res.sendFile(path.join(__dirname + '/index.html'));
+});
   .listen(port, () => console.log(`Listening on ${port}`));
   var io = socketIO(server); 
   
