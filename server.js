@@ -27,6 +27,7 @@ server.listen(5000,function() {
   server.listen(port, function () {
     console.log(`Listening on ${server.address().port}`);
   });
+  app.set('port',port); //bub added 
 
 const gameStages = {
 	newGame: 0,
