@@ -1,9 +1,9 @@
 // Dependencies
-var express = require('express');
+//var express = require('express');
 var http = require('http');
 var path = require('path');
 var socketIO = require('socket.io');
-var app = express();
+/*var app = express();
 var server = http.Server(app); 
 var io = socketIO(server); 
 
@@ -22,11 +22,17 @@ app.get('/', function(req, res) {
 app.listen( app.get( 'port' ), function() {
     console.log( 'Node server is running on port ' + app.get( 'port' ));
     });
-    /*
-  server.listen(port, function () {
-    console.log(`(2)Listening on ${server.address().port}`);
-  });
+    
+  //server.listen(port, function () {
+   // console.log(`(2)Listening on ${server.address().port}`);
+ // });
  */
+var express = require('express'),
+    app = express(),
+    server = require('http').createServer(app),
+    io = require('socket.io').listen(server);
+
+server.listen(process.env.PORT || 3000);
 
 const gameStages = {
 	newGame: 0,
