@@ -37,8 +37,8 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
 }); 
 
-http.listen(PORT,function(){
-    console.log("http listening to to port " + PORT);
+http.listen( (process.env.PORT || 3000),function(){
+    console.log("http listening to to port ");
 });
 server.listen(process.env.PORT || 3000);
 
