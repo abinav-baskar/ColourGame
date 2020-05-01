@@ -14,7 +14,7 @@ if (port == null || port == "") {
 }
 
 app.set('port',port); 
-app.use('/static',express.static(__dirname + '/static'));
+app.use('/static',express.static(__dirname + '/Static'));
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
 }); 
@@ -67,9 +67,10 @@ var newColours = {};
       totalChosen: 0
     }
 }
+console.log("ok we're fine at this stage");
 
 io.on('connection', function(socket) { //must happen every time a socket connects
-
+    console.log("FINALLY!");
   io.sockets.emit('firstBarTime',firstBarTime);
   //playerSimulation();
 
