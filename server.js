@@ -8,25 +8,20 @@ var server = http.Server(app);
 var io = socketIO(server); 
 
 //App Setup
-app.set('port',5000); 
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 8082;
+}
+
+app.set('port',port); 
 app.use('/static',express.static(__dirname + '/static'));
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
-}); //USED TO BE THERE
+}); 
 
-//Start the Server
-/*
-server.listen(5000,function() {
-  console.log("Starting on localhost:50000");
-});
-*/
- let port = process.env.PORT;
-  if (port == null || port == "") {
-    port = 8082;
-  }
 
   server.listen(port, function () {
-    console.log(`(1)Listening on ${server.address().port}`);
+    console.log(`(2)Listening on ${server.address().port}`);
   });
  
 
