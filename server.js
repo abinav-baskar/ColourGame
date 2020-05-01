@@ -32,11 +32,14 @@ var express = require('express'),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server);
 
-app.use('/Static',express.static(__dirname + '/Static'));
+app.use('/static',express.static(__dirname + '/static'));
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
 }); 
 
+http.listen(PORT,function(){
+    console.log("http listening to to port " + PORT);
+});
 server.listen(process.env.PORT || 3000);
 
 const gameStages = {
