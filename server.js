@@ -37,9 +37,6 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
 }); 
 
-http.listen( (process.env.PORT || 3000),function(){
-    console.log("http listening to to port ");
-});
 server.listen(process.env.PORT || 3000);
 
 const gameStages = {
