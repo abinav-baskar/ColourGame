@@ -32,7 +32,7 @@ var express = require('express'),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server);
 
-app.use('/static',express.static(__dirname + '/static'));
+app.use('/Static',express.static(__dirname + '/Static'));
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
 }); 
